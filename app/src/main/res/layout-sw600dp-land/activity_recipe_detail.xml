@@ -44,7 +44,7 @@
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/ingred_tv"
-        app:layout_constraintEnd_toStartOf="@+id/step_frag_container_land"
+        app:layout_constraintEnd_toStartOf="@+id/step_frag_container"
         app:layout_constraintStart_toEndOf="@+id/ingred_tv"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="2" />
@@ -70,7 +70,7 @@
         android:layout_marginTop="8dp"
         android:background="?android:listDivider"
         app:layout_constraintBottom_toTopOf="@+id/master_list_fragment"
-        app:layout_constraintEnd_toStartOf="@id/step_frag_container_land"
+        app:layout_constraintEnd_toStartOf="@id/step_frag_container"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recycler_ingredients" />
 
@@ -84,7 +84,7 @@
         android:layout_marginStart="8dp"
         android:background="?android:listDivider"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/step_frag_container_land"
+        app:layout_constraintEnd_toStartOf="@+id/step_frag_container"
         app:layout_constraintStart_toEndOf="@id/recycler_ingredients"
         app:layout_constraintTop_toTopOf="parent" />
     <!-- Display the static master list fragment -->
@@ -107,7 +107,7 @@
     </FrameLayout>
 
     <FrameLayout
-        android:id="@+id/step_frag_container_land"
+        android:id="@+id/step_frag_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"

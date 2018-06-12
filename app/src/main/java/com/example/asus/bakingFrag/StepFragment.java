@@ -35,27 +35,26 @@ import timber.log.Timber;
  */
 public class StepFragment extends Fragment {
 
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_STEP = "step";
-    private static final String ARG_NUMBER = "number";
     // The key for the intent
     public static final String STEP_KEY = "step";
     public static final String POSITION_KEY = "position";
     public static final String NAME_KEY = "name";
-    public static final String PLAY_WHEN_READY="playWhenReady";
-    public static final String CURRENT_WINDOW="window";
-    public static final String PLAY_POSITION="playbackPosition";
+    public static final String PLAY_WHEN_READY = "playWhenReady";
+    public static final String CURRENT_WINDOW = "window";
+    public static final String PLAY_POSITION = "playbackPosition";
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_STEP = "step";
+    private static final String ARG_NUMBER = "number";
     private Recipes.Steps mStep;
     private String mVideoUrl;
     private PlayerView mPlayerView;
     private SimpleExoPlayer mPlayer;
     private long playbackPosition;
     private int currentWindow;
-    private boolean playWhenReady;
+    private boolean playWhenReady = true;
     private TextView mEmptyStateTV;
     private int mNumberStep;
     private View mLoadingIndicator;
-
 
 
     public StepFragment() {
@@ -66,7 +65,7 @@ public class StepFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param step Parameter 1.
+     * @param step       Parameter 1.
      * @param numberStep Parameter 2.
      * @return A new instance of fragment StepFragment.
      */
@@ -107,15 +106,15 @@ public class StepFragment extends Fragment {
         mVideoUrl = mStep.getVideoURL();
         Timber.i("Video: " + mVideoUrl);
         mPlayerView = rootView.findViewById(R.id.player_view);
-       if (savedInstanceState != null){
-           playWhenReady=savedInstanceState.getBoolean(PLAY_WHEN_READY);
-           playbackPosition= savedInstanceState.getLong(PLAY_POSITION);
-           currentWindow=savedInstanceState.getInt(CURRENT_WINDOW);
-          // mPlayer.setPlayWhenReady(playWhenReady);
-       //  mPlayer.seekTo(currentWindow, playbackPosition);
+        if (savedInstanceState != null) {
+            //retrieve previous states
+            playWhenReady = savedInstanceState.getBoolean(PLAY_WHEN_READY);
+            playbackPosition = savedInstanceState.getLong(PLAY_POSITION);
+            currentWindow = savedInstanceState.getInt(CURRENT_WINDOW);
+
         }
-            // Get a reference to the ConnectivityManager to check state of network connectivity
-            ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        // Get a reference to the ConnectivityManager to check state of network connectivity
+        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         // Get details on the currently active default data network
         NetworkInfo networkInfo = null;
         if (cm != null) {
@@ -125,9 +124,7 @@ public class StepFragment extends Fragment {
         if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
             if (!mVideoUrl.isEmpty()) {
                 mLoadingIndicator.setVisibility(View.GONE);
-                if(mPlayer==null) {
-                    initializePlayer();
-                }
+                initializePlayer();
             } else {
                 //hide load indicator and player
                 mLoadingIndicator.setVisibility(View.GONE);
@@ -144,23 +141,21 @@ public class StepFragment extends Fragment {
 
         }
 
-        String description=mStep.getDescription();
-        TextView descrTV=rootView.findViewById(R.id.description_tv);
+        String description = mStep.getDescription();
+        TextView descrTV = rootView.findViewById(R.id.description_tv);
         descrTV.setText(description);
         return rootView;
     }
+
+    /* This method is called just after onPause and save the exoplayer states saved in releasePlayer*/
     @Override
     public void onSaveInstanceState(Bundle outState) {
         Timber.i("onSaveInstanceState called");
         super.onSaveInstanceState(outState);
-        if (mPlayer != null) {
-            outState.putLong("PLAYER_POSITION", mPlayer.getCurrentPosition());
-            outState.putBoolean("PLAY_WHEN_READY",  mPlayer.getPlayWhenReady());
-            Timber.i("saved state play ready: "+ mPlayer.getPlayWhenReady());
-            outState.putInt("CURRENT_WINDOW", mPlayer.getCurrentWindowIndex());
-        }
-
-
+        outState.putLong(PLAY_POSITION, playbackPosition);
+        outState.putBoolean(PLAY_WHEN_READY, playWhenReady);
+        outState.putInt(CURRENT_WINDOW, currentWindow);
+        Timber.i("saved state player: " + playbackPosition);
     }
 
     /**
@@ -168,18 +163,17 @@ public class StepFragment extends Fragment {
      */
     private void initializePlayer() {
         Timber.i("initializePlayer called");
-        playWhenReady = true;
-        playbackPosition=0;
+        if (mPlayer == null) {
             mPlayer = ExoPlayerFactory.newSimpleInstance(
                     new DefaultRenderersFactory(getContext()),
                     new DefaultTrackSelector(), new DefaultLoadControl());
-            mPlayerView.setPlayer(mPlayer);
-            mPlayer.setPlayWhenReady(playWhenReady);
-            mPlayer.seekTo(currentWindow, playbackPosition);
             Uri uri = Uri.parse(mVideoUrl);
             MediaSource mediaSource = buildMediaSource(uri);
+            mPlayerView.setPlayer(mPlayer);
             mPlayer.prepare(mediaSource, true, false);
-
+            mPlayer.setPlayWhenReady(playWhenReady);
+            mPlayer.seekTo(currentWindow, playbackPosition);
+        }
     }
 
     /*
@@ -191,12 +185,13 @@ public class StepFragment extends Fragment {
                 new DefaultHttpDataSourceFactory("exoplayer-bakingFrag")).
                 createMediaSource(uri);
     }
+
     private void releasePlayer() {
         if (mPlayer != null) {
             playbackPosition = mPlayer.getCurrentPosition();
             currentWindow = mPlayer.getCurrentWindowIndex();
             playWhenReady = mPlayer.getPlayWhenReady();
-            mPlayer.stop();
+            //mPlayer.stop();
             mPlayer.release();
             mPlayer = null;
         }
@@ -206,7 +201,7 @@ public class StepFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         Timber.i("onDestroy called");
-        releasePlayer();
+
     }
 
     @Override
@@ -220,7 +215,7 @@ public class StepFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         Timber.i("onDestroyView called");
-        releasePlayer();
+
     }
 
     private void hideSystemUi() {
@@ -240,15 +235,13 @@ public class StepFragment extends Fragment {
     }
 
 
-   @Override
+    @Override
     public void onPause() {
-       super.onPause();
-       Timber.i("onPause called");
-       if (Util.SDK_INT <= 23) {
-           releasePlayer();
-       }
-   }
-
-
+        super.onPause();
+        Timber.i("onPause called");
+        if (Util.SDK_INT <= 23) {
+            releasePlayer();
+        }
+    }
 
 }
