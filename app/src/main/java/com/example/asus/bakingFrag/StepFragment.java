@@ -188,9 +188,6 @@ public class StepFragment extends Fragment {
 
     private void releasePlayer() {
         if (mPlayer != null) {
-            playbackPosition = mPlayer.getCurrentPosition();
-            currentWindow = mPlayer.getCurrentWindowIndex();
-            playWhenReady = mPlayer.getPlayWhenReady();
             //mPlayer.stop();
             mPlayer.release();
             mPlayer = null;
@@ -208,7 +205,6 @@ public class StepFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         Timber.i("onDetach called");
-        releasePlayer();
     }
 
     @Override
@@ -239,9 +235,16 @@ public class StepFragment extends Fragment {
     public void onPause() {
         super.onPause();
         Timber.i("onPause called");
+        if (mPlayer!=null){
+            playbackPosition = mPlayer.getCurrentPosition();
+            currentWindow = mPlayer.getCurrentWindowIndex();
+            playWhenReady = mPlayer.getPlayWhenReady();
+        }
+
         if (Util.SDK_INT <= 23) {
             releasePlayer();
         }
+
     }
 
 }
