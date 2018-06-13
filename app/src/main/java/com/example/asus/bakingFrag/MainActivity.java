@@ -84,6 +84,8 @@ public class MainActivity extends AppCompatActivity {
                 Timber.i("Retrofit Response");
                 if (response.isSuccessful()){
                     mRecipesList=response.body();
+                    mRecipesAdapter.setRecipesData(mRecipesList);
+                    Timber.i("Size of response "+String.valueOf(mRecipesList.size()));
                     View loadingIndicator = findViewById(R.id.loading_spinner);
                     loadingIndicator.setVisibility(View.GONE);
                 }
@@ -100,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
                 }else {
                     loadingIndicator.setVisibility(View.GONE);
                     //mEmptyStateTextView.setVisibility(View.VISIBLE);
-                    mEmptyStateTextView.setText(getString(R.string.no_download_data));
+                 //   mEmptyStateTextView.setText(getString(R.string.no_download_data));
                 }
             }
         });
@@ -110,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             Timber.e(e);
         }*/
-       mRecipesAdapter.setRecipesData(mRecipesList);
+
         // Set up the Listener to click on Item row in RecyclerView
         mRecipesAdapter.setOnItemClickListener(new RecipesAdapter.OnItemClickListener() {
             @Override

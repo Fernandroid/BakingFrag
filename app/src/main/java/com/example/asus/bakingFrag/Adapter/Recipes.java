@@ -25,15 +25,15 @@ public class Recipes implements Parcelable {
             return new Recipes[size];
         }
     };
-    @SerializedName("mName")
+    @SerializedName("name")
     String mName;
-    @SerializedName("mImage")
+    @SerializedName("image")
     String mImage;
-    @SerializedName("mServings")
+    @SerializedName("servings")
     int mServings;
-    @SerializedName("mIngredients")
+    @SerializedName("ingredients")
     List<Ingredients> mIngredients;
-    @SerializedName("mSteps")
+    @SerializedName("steps")
     List<Steps> mSteps;
 
     public Recipes(String name, String image, int servings) {
@@ -105,26 +105,26 @@ public class Recipes implements Parcelable {
                 return new Ingredients[size];
             }
         };
-        @SerializedName("mQuantity")
-        int mQuantity;
-        @SerializedName("mMeasure")
+        @SerializedName("quantity")
+        double mQuantity;
+        @SerializedName("measure")
         String mMeasure;
-        @SerializedName("mIngredient")
+        @SerializedName("ingredient")
         String mIngredient;
 
-        public Ingredients(int quantity, String measure, String ingredient) {
+        public Ingredients(double quantity, String measure, String ingredient) {
             mQuantity = quantity;
             mMeasure = measure;
             mIngredient = ingredient;
         }
 
         protected Ingredients(Parcel in) {
-            this.mQuantity = in.readInt();
+            this.mQuantity = in.readDouble();
             this.mMeasure = in.readString();
             this.mIngredient = in.readString();
         }
 
-        public int getQuantity() {
+        public double getQuantity() {
             return mQuantity;
         }
 
@@ -143,7 +143,7 @@ public class Recipes implements Parcelable {
 
         @Override
         public void writeToParcel(Parcel dest, int flags) {
-            dest.writeInt(this.mQuantity);
+            dest.writeDouble(this.mQuantity);
             dest.writeString(this.mMeasure);
             dest.writeString(this.mIngredient);
         }
@@ -152,13 +152,13 @@ public class Recipes implements Parcelable {
      * Static inner class for Recipe Steps
      */
     public static class Steps implements Parcelable {
-        @SerializedName("mShortDescription")
+        @SerializedName("shortDescription")
         String mShortDescription;
-        @SerializedName("mDescription")
+        @SerializedName("description")
         String mDescription;
-        @SerializedName("mVideoURL")
+        @SerializedName("videoURL")
         String mVideoURL;
-        @SerializedName("mThumbnailURL")
+        @SerializedName("thumbnailURL")
         String mThumbnailURL;
 
         public Steps(String shortdescription, String description, String videoURL, String thumbnailURL) {
