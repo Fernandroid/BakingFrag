@@ -106,6 +106,7 @@ public class StepFragment extends Fragment {
         mVideoUrl = mStep.getVideoURL();
         Timber.i("Video: " + mVideoUrl);
         mPlayerView = rootView.findViewById(R.id.player_view);
+
         if (savedInstanceState != null) {
             //retrieve previous states
             playWhenReady = savedInstanceState.getBoolean(PLAY_WHEN_READY);
@@ -115,6 +116,7 @@ public class StepFragment extends Fragment {
         }
         // Get a reference to the ConnectivityManager to check state of network connectivity
         ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+
         // Get details on the currently active default data network
         NetworkInfo networkInfo = null;
         if (cm != null) {
@@ -156,6 +158,18 @@ public class StepFragment extends Fragment {
         outState.putBoolean(PLAY_WHEN_READY, playWhenReady);
         outState.putInt(CURRENT_WINDOW, currentWindow);
         Timber.i("saved state player: " + playbackPosition);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(mPlayer!=null) {
+            playbackPosition = mPlayer.getCurrentPosition();
+            currentWindow = mPlayer.getCurrentWindowIndex();
+            playWhenReady = mPlayer.getPlayWhenReady();
+            mPlayer.setPlayWhenReady(playWhenReady);
+            mPlayer.seekTo(currentWindow, playbackPosition);
+        }
     }
 
     /**
