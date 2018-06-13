@@ -3,6 +3,8 @@ package com.example.asus.bakingFrag.Adapter;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,10 +25,15 @@ public class Recipes implements Parcelable {
             return new Recipes[size];
         }
     };
+    @SerializedName("mName")
     String mName;
+    @SerializedName("mImage")
     String mImage;
+    @SerializedName("mServings")
     int mServings;
+    @SerializedName("mIngredients")
     List<Ingredients> mIngredients;
+    @SerializedName("mSteps")
     List<Steps> mSteps;
 
     public Recipes(String name, String image, int servings) {
@@ -98,8 +105,11 @@ public class Recipes implements Parcelable {
                 return new Ingredients[size];
             }
         };
+        @SerializedName("mQuantity")
         int mQuantity;
+        @SerializedName("mMeasure")
         String mMeasure;
+        @SerializedName("mIngredient")
         String mIngredient;
 
         public Ingredients(int quantity, String measure, String ingredient) {
@@ -142,9 +152,13 @@ public class Recipes implements Parcelable {
      * Static inner class for Recipe Steps
      */
     public static class Steps implements Parcelable {
+        @SerializedName("mShortDescription")
         String mShortDescription;
+        @SerializedName("mDescription")
         String mDescription;
+        @SerializedName("mVideoURL")
         String mVideoURL;
+        @SerializedName("mThumbnailURL")
         String mThumbnailURL;
 
         public Steps(String shortdescription, String description, String videoURL, String thumbnailURL) {

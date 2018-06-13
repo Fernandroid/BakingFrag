@@ -1,6 +1,9 @@
 package com.example.asus.bakingFrag;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -8,14 +11,21 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.asus.bakingFrag.Adapter.Recipes;
 import com.example.asus.bakingFrag.Adapter.RecipesAdapter;
+import com.example.asus.bakingFrag.Api.BakingApi;
+import com.example.asus.bakingFrag.Api.EndPoint;
 import com.example.asus.bakingFrag.Utils.Utils;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity {
@@ -23,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView mRecyclerView;
     RecipesAdapter mRecipesAdapter;
     List<Recipes> mRecipesList;
+    TextView mEmptyStateTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,11 +74,42 @@ public class MainActivity extends AppCompatActivity {
         mRecipesAdapter = new RecipesAdapter(this);
         mRecyclerView.setAdapter(mRecipesAdapter);
 
-        try{
+        //Download recipes data from internet by retrofit
+        EndPoint api = BakingApi.getRequest();
+        Call<ArrayList<Recipes>> response=api.getRecipes();
+        response.enqueue(new Callback<ArrayList<Recipes>>() {
+
+            @Override
+            public void onResponse(Call<ArrayList<Recipes>> call, Response<ArrayList<Recipes>> response) {
+                Timber.i("Retrofit Response");
+                if (response.isSuccessful()){
+                    mRecipesList=response.body();
+                    View loadingIndicator = findViewById(R.id.loading_spinner);
+                    loadingIndicator.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Recipes>> call, Throwable t) {
+                Timber.e(t);
+                View loadingIndicator = findViewById(R.id.loading_spinner);
+                if(!isInternetAvailable()){
+                    loadingIndicator.setVisibility(View.GONE);
+                    // Display no internet connection message
+                    mEmptyStateTextView.setText(R.string.no_internet_connection);
+                }else {
+                    loadingIndicator.setVisibility(View.GONE);
+                    //mEmptyStateTextView.setVisibility(View.VISIBLE);
+                    mEmptyStateTextView.setText(getString(R.string.no_download_data));
+                }
+            }
+        });
+
+     /*  try{
             mRecipesList=Utils.extractDataFromJson(this);
         } catch (IOException e) {
             Timber.e(e);
-        }
+        }*/
        mRecipesAdapter.setRecipesData(mRecipesList);
         // Set up the Listener to click on Item row in RecyclerView
         mRecipesAdapter.setOnItemClickListener(new RecipesAdapter.OnItemClickListener() {
@@ -94,6 +136,17 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /* Check internet availability */
+    private   boolean isInternetAvailable() {
+        // Get a reference to the ConnectivityManager to check state of network connectivity
+        ConnectivityManager cm = (ConnectivityManager) getBaseContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        // Get details on the currently active default data network
+        NetworkInfo networkInfo = null;
+        if (cm != null) {
+            networkInfo = cm.getActiveNetworkInfo();
+        }
+        return networkInfo != null && networkInfo.isConnectedOrConnecting();
+    }
 }
 
 
