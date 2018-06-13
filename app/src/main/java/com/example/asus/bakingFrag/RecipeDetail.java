@@ -34,15 +34,10 @@ public class RecipeDetail extends AppCompatActivity implements MasterListFragmen
         setContentView(R.layout.activity_recipe_detail);
 
         // Is the layout for two pane available? If so, set mTwoPane to true.
-        if (findViewById(R.id.recipe_detail_sw600) != null) {
+        if (findViewById(R.id.recipe_detail_sw600) != null ||findViewById(R.id.recipe_detail_sw600_land)!=null ) {
             mTwoPane = true;
-            mTwoPaneLand=false;
-        }else if(findViewById(R.id.recipe_detail_sw600_land)!=null){
-            mTwoPaneLand=true;
-            mTwoPane = false;
         }else{
             mTwoPane=false;
-            mTwoPaneLand=false;
         }
 
         // Receive the intent from MainActivity by Parcelable
@@ -97,22 +92,14 @@ public class RecipeDetail extends AppCompatActivity implements MasterListFragmen
      */
     @Override
     public void onFragmentInteraction(Recipes.Steps selectedStep, int numberStep) {
-        StepFragment fragment = StepFragment.newInstance(selectedStep,numberStep);
+
         if (mTwoPane) {
             // Create new instance of StepDetail fragment and add it to
             // the activity using a fragment transaction.
-
+            StepFragment fragment = StepFragment.newInstance(selectedStep,numberStep);
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.step_frag_container_sw600, fragment)// .addToBackStack(null)
+                    .replace(R.id.step_frag_container, fragment)// .addToBackStack(null)
                     .commit();
-
-        }else if (mTwoPaneLand){
-           // StepFragment fragment = StepFragment.newInstance(selectedStep,numberStep);
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.step_frag_container_land, fragment)
-                    .commit();
-
-
         }else {
             startStepDetail(selectedStep,numberStep, mName);
         }
@@ -137,8 +124,6 @@ public class RecipeDetail extends AppCompatActivity implements MasterListFragmen
         intent.putExtra(StepDetail.NAME_KEY,name);
         startActivity(intent);
     }
-
-
 
 
 }

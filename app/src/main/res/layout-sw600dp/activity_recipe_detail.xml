@@ -88,7 +88,7 @@
         android:layout_marginTop="16dp"
         android:isScrollContainer="false"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/step_frag_container_sw600"
+        app:layout_constraintEnd_toStartOf="@id/step_frag_container"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider">
@@ -96,7 +96,7 @@
     </FrameLayout>
 
     <FrameLayout
-        android:id="@+id/step_frag_container_sw600"
+        android:id="@+id/step_frag_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginEnd="8dp"
