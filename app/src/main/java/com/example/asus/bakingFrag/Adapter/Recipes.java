@@ -90,6 +90,7 @@ public class Recipes implements Parcelable {
         dest.writeList(this.mIngredients);
         dest.writeList(this.mSteps);
     }
+
   /*
    * Static inner class for Recipe Ingredients
    */

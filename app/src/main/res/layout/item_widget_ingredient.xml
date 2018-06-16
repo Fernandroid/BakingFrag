@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:id="@+id/constraint_ingredients"
-    android:layout_height="wrap_content">
-
-
+    android:id="@+id/item_widget"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
     <TextView
-        android:id="@+id/measure"
+        android:id="@+id/widget_measure"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -19,15 +18,15 @@
         android:gravity="end"
         android:textAlignment="textEnd"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/quantity"
+        app:layout_constraintEnd_toStartOf="@+id/widget_quantity"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ingredient"
+        app:layout_constraintTop_toBottomOf="@+id/widget_ingredient"
         app:layout_constraintVertical_bias="0.00999999"
         tools:text="CUP" />
 
     <TextView
-        android:id="@+id/quantity"
+        android:id="@+id/widget_quantity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -39,16 +38,16 @@
         android:includeFontPadding="false"
         android:lineSpacingExtra="0dp"
         android:textAlignment="textEnd"
-        app:layout_constraintBottom_toBottomOf="@+id/measure"
+        app:layout_constraintBottom_toBottomOf="@+id/widget_measure"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toEndOf="@id/measure"
-        app:layout_constraintTop_toBottomOf="@+id/ingredient"
+        app:layout_constraintStart_toEndOf="@id/widget_measure"
+        app:layout_constraintTop_toBottomOf="@+id/widget_ingredient"
         app:layout_constraintVertical_bias="1.0"
         tools:text="2" />
 
     <TextView
-        android:id="@+id/ingredient"
+        android:id="@+id/widget_ingredient"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"

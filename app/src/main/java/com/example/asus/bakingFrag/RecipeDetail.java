@@ -1,6 +1,8 @@
 package com.example.asus.bakingFrag;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -11,8 +13,11 @@ import android.widget.TextView;
 import com.example.asus.bakingFrag.Adapter.IngredientsAdapter;
 import com.example.asus.bakingFrag.Adapter.Recipes;
 import com.example.asus.bakingFrag.Adapter.StepsAdapter;
+import com.google.gson.Gson;
 
 import java.util.List;
+
+import timber.log.Timber;
 
 public class RecipeDetail extends AppCompatActivity implements MasterListFragment.OnFragmentInteractionListener{
     // The key for the intent
@@ -48,6 +53,8 @@ public class RecipeDetail extends AppCompatActivity implements MasterListFragmen
         int servings=mRecipe.getServings();
         TextView servingTV=findViewById(R.id.serving_tv);
         servingTV.setText(String.valueOf(servings));
+        //Save recipe in SharedPreferences
+        saveIngredientList(mName,mRecipe);
 
         List<Recipes.Ingredients> ingredientsList=mRecipe.getIngredients();
         mStepsList=mRecipe.getSteps();
@@ -81,9 +88,8 @@ public class RecipeDetail extends AppCompatActivity implements MasterListFragmen
                     .commit();
 
         }
-
-
     }
+
     /**
      * Method to start RecipeDetail Fragment when an item row in the MasterListFragment recycler is clicked.
      * This activity shows details on the movie selected
@@ -125,5 +131,16 @@ public class RecipeDetail extends AppCompatActivity implements MasterListFragmen
         startActivity(intent);
     }
 
+    /* Save list ingredient in SharedPreferences file to display in app Widget*/
+    private void saveIngredientList(String recipeName, Recipes recipes){
+        Timber.i("save ingredient");
+        Gson gson=new Gson();
+        String fileJson=gson.toJson(recipes);
+        SharedPreferences sharedPref=getSharedPreferences(getString(R.string.preferece_file_key), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor=sharedPref.edit();
+        editor.putString(getString(R.string.file_json_key),fileJson);
+        editor.putString(getString(R.string.recipe_name_key),recipeName);
+        editor.commit();
+    }
 
 }

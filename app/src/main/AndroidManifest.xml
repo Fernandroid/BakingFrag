@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.asus.bakingFrag">
+
     <!-- This permission is necessary in order to perform network access. -->
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- This permission is necessary in order to get info network. -->
@@ -13,18 +14,33 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.example.asus.bakingFrag.MainActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".RecipeDetail"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".StepDetail"
+            android:parentActivityName=".StepDetail"></activity>
 
-        <activity android:name="com.example.asus.bakingFrag.RecipeDetail"
-            android:parentActivityName="com.example.asus.bakingFrag.MainActivity"/>
-        <activity android:name="com.example.asus.bakingFrag.StepDetail"
-            android:parentActivityName="com.example.asus.bakingFrag.StepDetail">
-        </activity>
+        <receiver android:name=".BakingWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/baking_widget_info" />
+        </receiver>
+        <service
+            android:name=".BakingWidgetService"
+            android:permission="android.permission.Bind_REMOTEVIEWS" />
+
+
     </application>
 
 </manifest>
