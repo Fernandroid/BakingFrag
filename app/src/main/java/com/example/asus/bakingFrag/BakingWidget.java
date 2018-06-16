@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.RemoteViews;
 
+import timber.log.Timber;
+
 /**
  * Implementation of App Widget functionality.
  */
@@ -15,7 +17,7 @@ public class BakingWidget extends AppWidgetProvider {
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
-
+        Timber.i("update widget called");
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.baking_widget);
         // Set the service to act as adapter of ListView
