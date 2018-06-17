@@ -5,8 +5,11 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.RemoteViews;
+
+import com.google.gson.Gson;
 
 import timber.log.Timber;
 
@@ -20,6 +23,8 @@ public class BakingWidget extends AppWidgetProvider {
         Timber.i("update widget called");
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.baking_widget);
+        String recipeName=getRecipeName(context);
+        views.setTextViewText(R.id.recipe_name_widget,recipeName);
         // Set the service to act as adapter of ListView
         Intent sendService=new Intent(context,BakingWidgetService.class);
         views.setRemoteAdapter(R.id.appwidget_listview,sendService);
@@ -39,6 +44,12 @@ public class BakingWidget extends AppWidgetProvider {
         }
     }
 
+    public static String getRecipeName(Context context) {
+        Gson gson = new Gson();
+        SharedPreferences sharedPref =context.getSharedPreferences(context.getString(R.string.preferece_file_key), context.MODE_PRIVATE);
+        String stringRecipe = sharedPref.getString(context.getString(R.string.file_json_key), null);
+        return sharedPref.getString(context.getString(R.string.recipe_name_key), null);
+    }
     @Override
     public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
