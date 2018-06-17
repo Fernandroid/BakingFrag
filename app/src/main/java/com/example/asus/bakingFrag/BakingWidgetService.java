@@ -105,7 +105,7 @@ class BakingRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory 
 
     @Override
     public long getItemId(int position) {
-        return position;
+        return 1;
     }
 
     @Override
