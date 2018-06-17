@@ -1,9 +1,15 @@
 package com.example.asus.bakingFrag;
 
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.example.asus.bakingFrag.Adapter.Recipes;
+import com.google.gson.Gson;
+
+import java.util.List;
+
+import timber.log.Timber;
 
 public class StepDetail extends AppCompatActivity {
     // The key for the intent

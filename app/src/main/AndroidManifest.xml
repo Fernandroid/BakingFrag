@@ -39,7 +39,7 @@
         </receiver>
         <service
             android:name=".BakingWidgetService"
-            android:permission="android.permission.Bind_REMOTEVIEWS" />
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
 
 
     </application>

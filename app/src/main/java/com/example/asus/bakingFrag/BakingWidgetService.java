@@ -34,6 +34,7 @@ class BakingRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory 
 
     @Override
     public void onCreate() {
+        Timber.i("onCreate BakingRemoteViewsFactory called");
     }
 
     //called on start and when notifyAppWidgetViewDataChanged is called
@@ -78,9 +79,10 @@ class BakingRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory 
         Recipes.Ingredients ingredient = ingredientsList.get(position);
         //Get a layout item widget and set text
         RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.item_widget_ingredient);
-        views.setTextViewText(R.id.ingredient, ingredient.getIngredient());
+        views.setTextViewText(R.id.widget_ingredient, ingredient.getIngredient());
         views.setTextViewText(R.id.widget_measure, ingredient.getMeasure());
         views.setTextViewText(R.id.widget_quantity, String.valueOf(ingredient.getQuantity()));
+        Timber.i("getView ingredient: "+ingredient.getIngredient());
         // Fill in the onClick PendingIntent Template using the specific plant Id for each item individually
         Bundle extras = new Bundle();
         extras.putParcelable(RecipeDetail.RECIPE_KEY, mRecipe);
@@ -103,7 +105,7 @@ class BakingRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory 
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     @Override
