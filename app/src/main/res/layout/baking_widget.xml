@@ -17,6 +17,21 @@
         tools:text="Recipe Name"
         android:textColor="@android:color/black"
         android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/no_data_widget"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="20dp"
+        android:background="#ebe1e1"
+        android:gravity="center_horizontal"
+        android:text="@string/no_data_widget_key"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
     <ListView
         android:id="@+id/appwidget_listview"
         android:layout_width="match_parent"
