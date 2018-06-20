@@ -46,7 +46,7 @@ public class RecipeDetail extends AppCompatActivity implements MasterListFragmen
         }
 
         // Receive the intent from MainActivity by Parcelable
-        // for the recipe selected in the Recycler
+        // for the recipe selected in the Recycler or from app Widget
         mRecipe = getIntent().getParcelableExtra(RECIPE_KEY);
         mName= mRecipe.getName();
         setTitle(mName);
@@ -58,7 +58,7 @@ public class RecipeDetail extends AppCompatActivity implements MasterListFragmen
 
         List<Recipes.Ingredients> ingredientsList=mRecipe.getIngredients();
         mStepsList=mRecipe.getSteps();
-        //Set Recyclerview and layout to position list items
+        // Set Recyclerview and layout to position list items
         mRecyclerIngred =findViewById(R.id.recycler_ingredients);
         //Attach LinearLayoutManager to Recycler
         LinearLayoutManager layoutIngred=new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -72,8 +72,7 @@ public class RecipeDetail extends AppCompatActivity implements MasterListFragmen
         mAdapter=new IngredientsAdapter(this,ingredientsList);
         mRecyclerIngred.setAdapter(mAdapter);
 
-        /*if we're being restored from a previous state,
-        // then we don't need to do anything
+        /*if we're being restored from a previous state, then we don't need to do anything
         Check if the Fragment already exists before creating a new one.
         This is because when there is a configuration change, the Fragment isn't really destroyed so we don't really need to instantiate
          a new Fragment instance, else we could end up with overlapping fragments.
@@ -92,7 +91,7 @@ public class RecipeDetail extends AppCompatActivity implements MasterListFragmen
 
     /**
      * Method to start RecipeDetail Fragment when an item row in the MasterListFragment recycler is clicked.
-     * This activity shows details on the movie selected
+     * This activity shows details on the recipe selected
      * @param selectedStep step selected to view details
      * @param numberStep item position of the clicked step
      */
@@ -118,7 +117,7 @@ public class RecipeDetail extends AppCompatActivity implements MasterListFragmen
 
     /**
      * Method to start RecipeDetail Activity when an item row in the recycler is clicked.
-     * This activity shows details on the movie selected
+     * This activity shows details on the recipe selected
      * @param selectedStep step selected to view details
      * @param position item position of the clicked step
      * @param name of the recipe steps

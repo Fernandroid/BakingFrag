@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     RecipesAdapter mRecipesAdapter;
     List<Recipes> mRecipesList;
     TextView mEmptyStateTextView;
+    View mLoadingIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +43,8 @@ public class MainActivity extends AppCompatActivity {
         // Set up Timber
         Timber.plant(new Timber.DebugTree());
 
-        //Set Recyclerview and layout to position list items
-        //https://stackoverflow.com/questions/31242812/how-can-a-divider-line-be-added-in-an-android-recyclerview
-
+        mLoadingIndicator = findViewById(R.id.loading_spinner_activity);
+        mEmptyStateTextView=findViewById(R.id.empty_view);
         //if the layout is for phone
         if(findViewById(R.id.recycler)!=null){
             //then set up the recycler as vertical linear way
@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
             LinearLayoutManager layout=new LinearLayoutManager(this);
             mRecyclerView.setLayoutManager(layout);
             //Set divider between itmes in Recyclerview
+            //https://stackoverflow.com/questions/31242812/how-can-a-divider-line-be-added-in-an-android-recyclerview
             DividerItemDecoration itemDivider = new DividerItemDecoration(mRecyclerView.getContext(),
                     layout.getOrientation() );
             mRecyclerView.addItemDecoration(itemDivider);
@@ -86,23 +87,21 @@ public class MainActivity extends AppCompatActivity {
                     mRecipesList=response.body();
                     mRecipesAdapter.setRecipesData(mRecipesList);
                     Timber.i("Size of response "+String.valueOf(mRecipesList.size()));
-                    View loadingIndicator = findViewById(R.id.loading_spinner);
-                    loadingIndicator.setVisibility(View.GONE);
+                    mLoadingIndicator.setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onFailure(Call<ArrayList<Recipes>> call, Throwable t) {
                 Timber.e(t);
-                View loadingIndicator = findViewById(R.id.loading_spinner);
                 if(!isInternetAvailable()){
-                    loadingIndicator.setVisibility(View.GONE);
+                    mLoadingIndicator.setVisibility(View.GONE);
                     // Display no internet connection message
                     mEmptyStateTextView.setText(R.string.no_internet_connection);
                 }else {
-                    loadingIndicator.setVisibility(View.GONE);
-                    //mEmptyStateTextView.setVisibility(View.VISIBLE);
-                 //   mEmptyStateTextView.setText(getString(R.string.no_download_data));
+                    mLoadingIndicator.setVisibility(View.GONE);
+                    mEmptyStateTextView.setVisibility(View.VISIBLE);
+                    mEmptyStateTextView.setText(getString(R.string.no_download_data));
                 }
             }
         });

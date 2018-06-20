@@ -67,7 +67,11 @@ public class BakingWidget extends AppWidgetProvider {
     }
     @Override
     public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
+        //when the widget is resized this update the views
+        updateAppWidget(context, appWidgetManager, appWidgetId);
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId,R.id.appwidget_listview);
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
+
     }
 
     @Override

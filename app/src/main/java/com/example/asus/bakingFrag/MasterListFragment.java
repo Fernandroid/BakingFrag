@@ -53,7 +53,7 @@ public class MasterListFragment extends Fragment {
 
     /**
      * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
+     * MasterListFragment using the provided parameters.
      *
      * @param stepsList  Parameter 1.
      * @param recipeName Parameter 2.
@@ -90,7 +90,6 @@ public class MasterListFragment extends Fragment {
         mRecyclerStep.setHasFixedSize(true);
         mStepsAdapter = new StepsAdapter(getContext(), mStepsList);
         mRecyclerStep.setAdapter(mStepsAdapter);
-        //mRecyclerStep.setAdapter(mStepsAdapter);
 
         if(mLastFirstVisiblePosition!=RecyclerView.NO_POSITION){
             mLayoutSteps.scrollToPositionWithOffset(mLastFirstVisiblePosition, 0);
@@ -141,7 +140,7 @@ public class MasterListFragment extends Fragment {
 
     /**
      * Method to start RecipeDetail Activity when an item row in the recycler is clicked.
-     * This activity shows details on the movie selected
+     * This activity shows details on the recipe selected
      *
      * @param selectedStep step selected to view details
      * @param position     item position of the clicked step
