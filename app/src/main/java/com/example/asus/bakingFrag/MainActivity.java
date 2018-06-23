@@ -10,6 +10,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -35,6 +36,10 @@ public class MainActivity extends AppCompatActivity {
     List<Recipes> mRecipesList;
     TextView mEmptyStateTextView;
     View mLoadingIndicator;
+    private int mLastFirstVisiblePosition;
+    private static final String RECYCLER_STATE_KEY = "state_key";
+    private LinearLayoutManager mLayout;
+    private GridLayoutManager mGridLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,25 +54,24 @@ public class MainActivity extends AppCompatActivity {
         if(findViewById(R.id.recycler)!=null){
             //then set up the recycler as vertical linear way
             mRecyclerView = findViewById(R.id.recycler);
-            LinearLayoutManager layout=new LinearLayoutManager(this);
-            mRecyclerView.setLayoutManager(layout);
+            mLayout=new LinearLayoutManager(this);
+            mRecyclerView.setLayoutManager(mLayout);
             //Set divider between itmes in Recyclerview
             //https://stackoverflow.com/questions/31242812/how-can-a-divider-line-be-added-in-an-android-recyclerview
             DividerItemDecoration itemDivider = new DividerItemDecoration(mRecyclerView.getContext(),
-                    layout.getOrientation() );
+                    mLayout.getOrientation() );
             mRecyclerView.addItemDecoration(itemDivider);
         }else{
             //if the layout is for tablet in landscape orientation
             mRecyclerView = findViewById(R.id.recycler_sw600_land);
             // set up GridLayoutManager to position the items in 2 columns
-            GridLayoutManager gridLayout = new GridLayoutManager(this, 2);
-            mRecyclerView.setLayoutManager(gridLayout);
+            mGridLayout = new GridLayoutManager(this, 2);
+            mRecyclerView.setLayoutManager(mGridLayout);
             //Set divider between itmes in Recyclerview
             DividerItemDecoration itemDivider = new DividerItemDecoration(mRecyclerView.getContext(),
-                    gridLayout.getOrientation() );
+                    mGridLayout.getOrientation() );
             mRecyclerView.addItemDecoration(itemDivider);
         }
-
 
         // This setting improves performance since items in recyclerView do not change the child layout size
         mRecyclerView.setHasFixedSize(true);
@@ -88,6 +92,11 @@ public class MainActivity extends AppCompatActivity {
                     mRecipesAdapter.setRecipesData(mRecipesList);
                     Timber.i("Size of response "+String.valueOf(mRecipesList.size()));
                     mLoadingIndicator.setVisibility(View.GONE);
+                    if(findViewById(R.id.recycler)!=null){
+                        mLayout.scrollToPositionWithOffset(mLastFirstVisiblePosition, 0);
+                    }else {
+                        mGridLayout.scrollToPositionWithOffset(mLastFirstVisiblePosition, 0);
+                    }
                 }
             }
 
@@ -147,6 +156,34 @@ public class MainActivity extends AppCompatActivity {
             networkInfo = cm.getActiveNetworkInfo();
         }
         return networkInfo != null && networkInfo.isConnectedOrConnecting();
+    }
+
+    /**
+     * to save the state of RecyclerView scroll position.
+     * https://stackoverflow.com/questions/35054974/how-to-retain-the-scrolled-position-of-a-recycler-view-on-back-press-from-anothe
+     * https://stackoverflow.com/questions/27816217/how-to-save-recyclerviews-scroll-position-using-recyclerview-state
+     */
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        if(findViewById(R.id.recycler)!=null){
+            mLastFirstVisiblePosition = mLayout.findFirstVisibleItemPosition();
+        }else {
+            mGridLayout.findFirstVisibleItemPosition();
+        }
+        outState.putInt(RECYCLER_STATE_KEY, mLastFirstVisiblePosition);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        Timber.i( "onRestoreInstanceState called ");
+        mLastFirstVisiblePosition = savedInstanceState.getInt(RECYCLER_STATE_KEY);
+        if(findViewById(R.id.recycler)!=null){
+            mLayout.scrollToPositionWithOffset(mLastFirstVisiblePosition,0);
+        }else {
+            mGridLayout.scrollToPositionWithOffset(mLastFirstVisiblePosition,0);
+        }
     }
 }
 
