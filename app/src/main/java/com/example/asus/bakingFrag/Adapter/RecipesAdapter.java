@@ -51,8 +51,7 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipeVi
         Recipes currentRecipes = mRecipesData.get(position);
         Timber.i(currentRecipes.getName());
         holder.textView.setText(currentRecipes.getName());
-        Log.i("Adapter",currentRecipes.getName());
-        if ( !TextUtils.isEmpty(currentRecipes.getImage())) {//currentRecipes.getImage() != null |
+        if ( !TextUtils.isEmpty(currentRecipes.getImage())) {
             Timber.i("Load image from internet");
             Uri url = Utils.createUrlImage("w300", currentRecipes.getImage());
             Picasso.with(mContext).load(url).into(holder.imageView);
@@ -90,7 +89,9 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipeVi
                 Timber.i("load image: Cheese cake");
                 break;
             default:
-                Timber.w("Nothing image available");
+                imageView.setImageResource(R.drawable.cookie_default);
+                Timber.w("load image default");
+
         }
     }
 

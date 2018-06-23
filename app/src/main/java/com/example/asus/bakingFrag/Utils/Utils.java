@@ -131,7 +131,7 @@ public class Utils {
     }
 
     /**
-     * Builds URL object to query the movie poster from Movie DB server given the resolution.
+     * Builds URL object to query the recipe image from server given the resolution.
      *
      * @param imageSize the resolution to load image.
      * @param imageUrl the URL to get the image.

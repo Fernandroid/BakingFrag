@@ -3,6 +3,8 @@ package com.example.asus.bakingFrag.Adapter;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,10 +25,15 @@ public class Recipes implements Parcelable {
             return new Recipes[size];
         }
     };
+    @SerializedName("name")
     String mName;
+    @SerializedName("image")
     String mImage;
+    @SerializedName("servings")
     int mServings;
+    @SerializedName("ingredients")
     List<Ingredients> mIngredients;
+    @SerializedName("steps")
     List<Steps> mSteps;
 
     public Recipes(String name, String image, int servings) {
@@ -83,6 +90,7 @@ public class Recipes implements Parcelable {
         dest.writeList(this.mIngredients);
         dest.writeList(this.mSteps);
     }
+
   /*
    * Static inner class for Recipe Ingredients
    */
@@ -98,23 +106,26 @@ public class Recipes implements Parcelable {
                 return new Ingredients[size];
             }
         };
-        int mQuantity;
+        @SerializedName("quantity")
+        double mQuantity;
+        @SerializedName("measure")
         String mMeasure;
+        @SerializedName("ingredient")
         String mIngredient;
 
-        public Ingredients(int quantity, String measure, String ingredient) {
+        public Ingredients(double quantity, String measure, String ingredient) {
             mQuantity = quantity;
             mMeasure = measure;
             mIngredient = ingredient;
         }
 
         protected Ingredients(Parcel in) {
-            this.mQuantity = in.readInt();
+            this.mQuantity = in.readDouble();
             this.mMeasure = in.readString();
             this.mIngredient = in.readString();
         }
 
-        public int getQuantity() {
+        public double getQuantity() {
             return mQuantity;
         }
 
@@ -133,7 +144,7 @@ public class Recipes implements Parcelable {
 
         @Override
         public void writeToParcel(Parcel dest, int flags) {
-            dest.writeInt(this.mQuantity);
+            dest.writeDouble(this.mQuantity);
             dest.writeString(this.mMeasure);
             dest.writeString(this.mIngredient);
         }
@@ -142,9 +153,13 @@ public class Recipes implements Parcelable {
      * Static inner class for Recipe Steps
      */
     public static class Steps implements Parcelable {
+        @SerializedName("shortDescription")
         String mShortDescription;
+        @SerializedName("description")
         String mDescription;
+        @SerializedName("videoURL")
         String mVideoURL;
+        @SerializedName("thumbnailURL")
         String mThumbnailURL;
 
         public Steps(String shortdescription, String description, String videoURL, String thumbnailURL) {
