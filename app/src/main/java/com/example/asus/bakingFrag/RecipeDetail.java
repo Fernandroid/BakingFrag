@@ -1,5 +1,7 @@
 package com.example.asus.bakingFrag;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -55,7 +57,7 @@ public class RecipeDetail extends AppCompatActivity implements MasterListFragmen
         servingTV.setText(String.valueOf(servings));
         //Save recipe in SharedPreferences
         saveIngredientList(mName,mRecipe);
-
+        sendUpdateWidget();
         List<Recipes.Ingredients> ingredientsList=mRecipe.getIngredients();
         mStepsList=mRecipe.getSteps();
         // Set Recyclerview and layout to position list items
@@ -141,5 +143,17 @@ public class RecipeDetail extends AppCompatActivity implements MasterListFragmen
         editor.putString(getString(R.string.recipe_name_key),recipeName);
         editor.commit();
     }
+
+    /* Send the update intent to app widget when it gets changed the recipe saved*/
+    private void sendUpdateWidget(){
+        Intent intentUpdate=new Intent(this,BakingWidget.class);
+        intentUpdate.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        int[] ids=AppWidgetManager.getInstance(getApplication())
+                .getAppWidgetIds(new ComponentName(getApplication(),BakingWidget.class));
+        intentUpdate.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,ids);
+        sendBroadcast(intentUpdate);
+        AppWidgetManager.getInstance(getApplication()).notifyAppWidgetViewDataChanged(ids, R.id.appwidget_listview);
+    }
+
 
 }

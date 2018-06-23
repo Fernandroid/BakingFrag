@@ -34,14 +34,15 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull IngredientsViewHolder holder, int position) {
-        Recipes.Ingredients ingredient=mIngredients.get(position);
-        Timber.i("ingredient: "+ingredient.getIngredient());
-        if ( !TextUtils.isEmpty(ingredient.getIngredient())){
-            holder.ingredienText.setText(ingredient.getIngredient());
-            holder.measureText.setText(ingredient.getMeasure());
-            holder.quantityText.setText(String.valueOf(ingredient.getQuantity()));
+        Recipes.Ingredients ingredient = mIngredients.get(position);
+        if (ingredient != null) {
+            Timber.i("ingredient: " + ingredient.getIngredient());
+            if (!TextUtils.isEmpty(ingredient.getIngredient())) {
+                holder.ingredienText.setText(ingredient.getIngredient());
+                holder.measureText.setText(ingredient.getMeasure());
+                holder.quantityText.setText(String.valueOf(ingredient.getQuantity()));
+            }
         }
-
     }
 
     @Override

@@ -89,7 +89,9 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipeVi
                 Timber.i("load image: Cheese cake");
                 break;
             default:
-                Timber.w("Nothing image available");
+                imageView.setImageResource(R.drawable.cookie_default);
+                Timber.w("load image default");
+
         }
     }
 
