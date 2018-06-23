@@ -10,7 +10,8 @@
     <string name="preferece_file_key">recipe_ingredients_file</string>
     <string name="file_json_key">file_json</string>
     <string name="recipe_name_key">recipe_name</string>
-
+    <!-- keys in RecipeDetail layout -->
+    <string name="ingredients_key">Ingredients for: </string>
     <!-- string in widget -->
     <string name="no_data_widget_key">No data available. Look at recipe list and select the recipe you like!</string>
 </resources>
